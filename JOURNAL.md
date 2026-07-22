@@ -19,14 +19,14 @@ This issue is about formatting in the `health.py` file. The database probe in th
 
 ## Week 8 — Reproduction & solution planning
 
-**Reproduction commit link:** [link to commit documenting the reproduced issue]
+**Reproduction commit link:** https://github.com/ifeiwuch/pathreview/commit/f81f0c2ffc4956960318cc96be910bf9379a30f0
 
 **Reproduction summary:**
 I started the app locally with Postgres running (`make run`) and hit `curl -i http://localhost:8000/health`. Even with the database fully up, the endpoint returned `503` with `postgres: "unhealthy"`, and the server logs showed `postgres_health_check_failed` with `Not an executable object: 'SELECT 1'` — confirming that `db.execute("SELECT 1")` in `health.py` raises under SQLAlchemy 2.x because the query isn't wrapped in `sqlalchemy.text()`, not because Postgres is actually down.
 
-**PLAN.md link:** [link to PLAN.md in your fork]
+**PLAN.md link:** https://github.com/ifeiwuch/pathreview/blob/fix/154-health-check-sql-string/PLAN.md
 
-**Walkthrough video (recommended):** [link to your Loom video, ≤2 min — recommended, not graded]
+**Walkthrough video (recommended):** [N/A]
 
 **Blockers or open questions:**
-[Anything you're still uncertain about going into Week 9, or leave blank]
+Need to confirm whether CI has a Postgres service available so the regression test can hit a real DB, or whether it needs to mock `db.execute` instead — haven't checked `.github/workflows/ci.yml` for this yet. Also want to double check there are no other raw-string `db.execute(...)` calls elsewhere in the codebase before closing this out.
