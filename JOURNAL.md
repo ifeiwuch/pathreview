@@ -49,16 +49,18 @@ None currently — both open questions from Week 8 are resolved.
 
 ### Check-in 2 (end of week)
 
-**PR link:** [link to your submitted pull request]
+**PR link:** [pending — not yet opened]
 
-**Branch:** [the branch name you worked on, e.g. `fix/123-short-description`]
+**Branch:** `fix/154-health-check-sql-string`
 
 **What you built:**
-[1–3 sentences summarizing what your fix does and how it works]
+In `api/routes/health.py`, imported `text` from `sqlalchemy` and wrapped the Postgres probe as `await db.execute(text("SELECT 1"))` instead of a bare string, so the async SQLAlchemy 2.x session accepts it as an `Executable`. Verified locally: with Postgres up, the log now shows `postgres_health_check_passed` (previously always `postgres_health_check_failed` / `ObjectNotExecutableError`); with the `db` container stopped to simulate a genuine outage, `postgres` still correctly reports `"unhealthy"` and the endpoint returns 503 — confirming the fix distinguishes "bad query shape" from "real DB down."
 
 **Tests added or updated:**
-[Which test files did you touch? What do they cover?]
+Added `tests/integration/test_health.py::test_health_reports_postgres_healthy_when_reachable`, which hits `GET /health` via `httpx.ASGITransport` against the real Postgres service (marked `@pytest.mark.integration`) and asserts `dependencies.postgres == "healthy"`. Passes locally against the docker-compose `db` service.
 
-**Self-review confirmation:** [ ] make check passes  [ ] make test-unit passes
+**Self-review confirmation:** [x] make test-unit passes (53 pre-existing unrelated failures confirmed identical on `main` via `git stash`, none touch `health.py`)  [ ] make check passes (pre-existing ruff findings in `health.py` — unsorted imports, unused `timedelta`, `Depends` in default arg — all present before this change too; left as-is to stay scoped to issue #154)
 
-**Draft PR feedback received from:** [name or Slack handle, or "none"]
+**Draft PR feedback received from:** none yet
+
+**Note:** While verifying manually, found that `/health` always returns 503 overall even with this fix, because the Redis check in the same file references `settings.redis_host`/`settings.redis_port`, which don't exist in `core/config.py` (only `redis_url` is defined) — a separate, pre-existing bug unrelated to #154. Left out of scope per plan; may be worth filing as its own issue.
