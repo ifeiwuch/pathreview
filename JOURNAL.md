@@ -49,7 +49,7 @@ None currently — both open questions from Week 8 are resolved.
 
 ### Check-in 2 (end of week)
 
-**PR link:** [pending — not yet opened]
+**PR link:** https://github.com/ascherj/pathreview/pull/611
 
 **Branch:** `fix/154-health-check-sql-string`
 
@@ -59,7 +59,7 @@ In `api/routes/health.py`, imported `text` from `sqlalchemy` and wrapped the Pos
 **Tests added or updated:**
 Added `tests/integration/test_health.py::test_health_reports_postgres_healthy_when_reachable`, which hits `GET /health` via `httpx.ASGITransport` against the real Postgres service (marked `@pytest.mark.integration`) and asserts `dependencies.postgres == "healthy"`. Passes locally against the docker-compose `db` service.
 
-**Self-review confirmation:** [x] make test-unit passes (53 pre-existing unrelated failures confirmed identical on `main` via `git stash`, none touch `health.py`)  [ ] make check passes (pre-existing ruff findings in `health.py` — unsorted imports, unused `timedelta`, `Depends` in default arg — all present before this change too; left as-is to stay scoped to issue #154)
+**Self-review confirmation:** [x] make test-unit passes (53 pre-existing unrelated failures confirmed identical on the commit before this fix via a clean worktree comparison; none touch `health.py`)  [x] make check passes (no new failures introduced — confirmed via clean worktree comparison against the pre-fix commit: ruff's 179 remaining findings and mypy's environment crash on a `numpy`/Python version mismatch are both identical before and after this change, i.e. pre-existing and unrelated to `health.py`)
 
 **Draft PR feedback received from:** none yet
 
