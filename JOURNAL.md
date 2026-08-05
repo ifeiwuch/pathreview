@@ -64,3 +64,45 @@ Added `tests/integration/test_health.py::test_health_reports_postgres_healthy_wh
 **Draft PR feedback received from:** none yet
 
 **Note:** While verifying manually, found that `/health` always returns 503 overall even with this fix, because the Redis check in the same file references `settings.redis_host`/`settings.redis_port`, which don't exist in `core/config.py` (only `redis_url` is defined) — a separate, pre-existing bug unrelated to #154. Left out of scope per plan; may be worth filing as its own issue.
+
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [ ] Yes  [x] No — still awaiting review
+
+**Summary of feedback:**
+[What did reviewers comment on? Or note that no review came in.]
+
+**How you responded:**
+[What changes did you make, or what did you reply? If no feedback,
+leave blank.]
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+[Be specific — what part of the process, codebase, or workflow
+surprised you?]
+Navigating the codebase and managing conflicting issues made it harder to test and validate the solution to my issue.
+
+**What did you learn about working in a large codebase?**
+[What's different about contributing to someone else's production code
+vs. building your own project?]
+I learned that it is important to stay in your own scope without biting off more than you can chew. 
+
+**How did AI tools help — and where did they fall short?**
+[Where was AI assistance most useful this module? Where did you need
+to go beyond what AI could give you?]
+The AI tool I used was claude, at was good at summarizing and explaining the codebase. It was also good at finding bugs in the code. However, Claude fell short when it came time to implement the bug fixes, at it wanted to fix other issues, rather than staying on the one I claimed. It had a hard time dealing with the many conflicting issues around the codebase. 
+
+**What would you do differently if you started over?**
+[Issue selection, planning, implementation, or process — anything
+you'd change?]
+If I were to start over, I would choose a different issue that would allow me to explore different portions of the codebase more thouroughly. The issue I chose this time around was more of a beginner issue, so it didn't require much codebase inspection.
+
+**What are you most proud of from this module?**
+[One thing — it doesn't have to be the PR itself.]
+The thing I am most proud of from this module is learning how open source codebases work. Now that I have seen the process that goes into managing this mock open-source codebase, I have began to see and understand those processes in other github repos that I have starred. 
